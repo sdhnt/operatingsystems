@@ -60,8 +60,15 @@ static void sig_chld(int dummy) {
 	if (pid != target_pid)
 
 	{
+		fprintf(stderr, "Recieved SIGCHLD not from Target Application\n");
+		fprintf(stderr, "Please input the path to the new target application\n");
+		//input stored in a
+		char* a="usr/bin/gnome-terminal";
+
+		kill(target_pid, SIGINT);
 		// Write your code here.....
 
+    //fork & execvp new process and perl graph it
 		return;
 	}
 	/*******************************************************************************************/
