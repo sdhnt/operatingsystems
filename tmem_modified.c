@@ -63,10 +63,18 @@ static void sig_chld(int dummy) {
 		fprintf(stderr, "Recieved SIGCHLD not from Target Application\n");
 		fprintf(stderr, "Please input the path to the new target application\n");
 		//input stored in a
-		char* a="usr/bin/gnome-terminal";
+		char* a="usr/bin/gnome-terminal";//INPUT THE ACTUAL PATH
 
 		kill(target_pid, SIGINT);
 		// Write your code here.....
+		int child3=fork();
+		if(child3==0)
+		{
+			char* a1[2];
+			a1[0]=a;
+			a1[1] = " | perl driveGNUplots.pl 4 400 400 400 400 vmsize vmdata vmstk vmrss";
+			execvp(a1[0],a1);
+		}
 
     //fork & execvp new process and perl graph it
 		return;
@@ -169,11 +177,10 @@ int main(int argc, char **argv) {
 	if(child1==0)
 	{
 			//fprintf(stderr, "Child created with pid %d\n",child1);
-			argv1[0] = "/usr/bin/gnome-terminal";
+			argv1[0] = "/usr/bin/xfce4‐terminal";
 			argv1[1] = NULL;
 			execvp(argv1[0],argv1);
 			//return child(1, argv1);
-
 	}
 
 	// Write your code here.....
