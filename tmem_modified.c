@@ -58,21 +58,21 @@ static void sig_chld(int dummy) {
 
 	/* Signal not from children */
 	if (pid != target_pid)
-
 	{
 		fprintf(stderr, "Recieved SIGCHLD not from Target Application\n");
-		fprintf(stderr, "Please input the path to the new target application\n");
+		fprintf(stderr, "Please input the path to the new target application\n");
 		//input stored in a
-		char* a="usr/bin/gnome-terminal";//INPUT THE ACTUAL PATH
+		char* a="./malloc2";
 
 		kill(target_pid, SIGINT);
 		// Write your code here.....
-		int child3=fork();
+		pid_t child3=fork();
 		if(child3==0)
 		{
-			char* a1[2];
+			char* a1[3];
 			a1[0]=a;
-			a1[1] = " | perl driveGNUplots.pl 4 400 400 400 400 vmsize vmdata vmstk vmrss";
+			a1[1] = " | perl driveGnuplots.pl 4 400 400 400 400 vmsize vmdata vmstk vmrss";
+			a1[2]=NULL;
 			execvp(a1[0],a1);
 		}
 
@@ -169,30 +169,31 @@ int main(int argc, char **argv) {
 
 	/*******************************************************************************************/
 	// Question 1a
-  int child1=fork();
+  pid_t child1=fork();
 
-  //char *argv1[]={"xcfe4-terminal",NULL};
 	char *argv1[2];
 
 	if(child1==0)
 	{
 			//fprintf(stderr, "Child created with pid %d\n",child1);
-			argv1[0] = "/usr/bin/xfce4‐terminal";
+			argv1[0] = "/usr/bin/xfce4-terminal";
 			argv1[1] = NULL;
 			execvp(argv1[0],argv1);
 			//return child(1, argv1);
 	}
 
 	// Write your code here.....
-	if(child!=0){ //if main
+	if(child1!=0){ //if main
 	target_pid = fork();
-		if (!target_pid)
-			return child(argc, argv);
-	}
-
-	if(child1!=0 && target_pid!=0){ //main function prints
+		if (target_pid==0)
+		{return child(argc, argv);}
+		if(target_pid!=0){ //main function prints
 		fprintf(stderr, "New Terminal Spawned. Please send the signal to pid %d\n",getpid());
 	}
+
+	}
+
+
 
 	/*******************************************************************************************/
 
